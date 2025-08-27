@@ -28,15 +28,15 @@ sendBtn.addEventListener('click', async () => {
     }
     
     const fullPhone = phone.startsWith('+') ? phone : '+86' + phone;
-    console.log('Sending OTP to phone:'， fullPhone);
-    showMsg('Sending code...');
+    console.log('Phone:'， fullPhone);
+    showMsg('Sending...');
     
     await sendOtp(fullPhone);
-    console.log('OTP sent');
-    showMsg('Code sent, check SMS');
+    console.log('Sent');
+    showMsg('Sent, check SMS');
   } catch (e) {
-    console.error('Send failed:', e);
-    showMsg('Send failed: ' + e.message);
+    console.error('Error:', e);
+    showMsg('Error: ' + e.message);
   }
 });
 
@@ -50,22 +50,22 @@ loginBtn.addEventListener('click', async () => {
     }
     
     const fullPhone = phone.startsWith('+') ? phone : '+86' + phone;
-    console.log('Verifying:', fullPhone);
+    console.log('Verify:', fullPhone);
     showMsg('Verifying...');
     
     const session = await verifyOtp(fullPhone, token);
     if (session) {
-      console.log('Login success');
-      showMsg('Login success, redirecting...');
+      console.log('Success');
+      showMsg('Success, redirecting...');
       setTimeout(function() {
         window.location.href = './index.html';
       }, 500);
     } else {
-      showMsg('Login failed');
+      showMsg('Failed');
     }
   } catch (e) {
-    console.error('Login failed:', e);
-    showMsg('Login failed: ' + e.message);
+    console.error('Error:', e);
+    showMsg('Error: ' + e.message);
   }
 });
 
