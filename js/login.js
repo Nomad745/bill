@@ -22,18 +22,21 @@ async function ensureRedirectIfLogged() {
 sendBtn.addEventListener('click', async () => {
   try {
     const phone = phoneInput.value.trim();
-    if (!phone) return showMsg('Please enter phone number');
+    if (!phone) {
+      showMsg('Please enter phone number');
+      return;
+    }
     
     const fullPhone = phone.startsWith('+') ? phone : '+86' + phone;
-    console.log('Sending OTP to:'， fullPhone);
+    console。log('Sending OTP to: ' + fullPhone);
     showMsg('Sending verification code...');
     
     await sendOtp(fullPhone);
     console.log('OTP sent successfully');
     showMsg('Verification code sent, please check SMS');
   } catch (e) {
-    console.error('OTP send failed:'， e);
-    showMsg('Send failed: ' + (e。message || e));
+    console.error('OTP send failed: ' + e);
+    showMsg('Send failed: ' + e.message);
   }
 });
 
@@ -41,10 +44,13 @@ loginBtn.addEventListener('click', async () => {
   try {
     const phone = phoneInput.value.trim();
     const token = otpInput.value.trim();
-    if (!phone || !token) return showMsg('Please enter phone and verification code');
+    if (!phone || !token) {
+      showMsg('Please enter phone and verification code');
+      return;
+    }
     
     const fullPhone = phone.startsWith('+') ? phone : '+86' + phone;
-    console.log('Verifying OTP:', { phone: fullPhone, token: token.substring(0, 3) + '***' });
+    console.log('Verifying OTP for: ' + fullPhone);
     showMsg('Verifying...');
     
     const session = await verifyOtp(fullPhone, token);
@@ -58,8 +64,8 @@ loginBtn.addEventListener('click', async () => {
       showMsg('Login failed, please try again');
     }
   } catch (e) {
-    console.error('Login failed:', e);
-    showMsg('Login failed: ' + (e.message || e));
+    console.error('Login failed: ' + e);
+    showMsg('Login failed: ' + e.message);
   }
 });
 
