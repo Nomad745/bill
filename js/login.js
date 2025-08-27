@@ -28,14 +28,14 @@ sendBtn.addEventListener('click', async () => {
     }
     
     const fullPhone = phone.startsWith('+') ? phone : '+86' + phone;
-    console.log('Phone:'， fullPhone);
+    console.log('Phone: ' + fullPhone);
     showMsg('Sending...');
     
     await sendOtp(fullPhone);
     console.log('Sent');
     showMsg('Sent, check SMS');
   } catch (e) {
-    console.error('Error:', e);
+    console.error('Error: ' + e);
     showMsg('Error: ' + e.message);
   }
 });
@@ -50,7 +50,7 @@ loginBtn.addEventListener('click', async () => {
     }
     
     const fullPhone = phone.startsWith('+') ? phone : '+86' + phone;
-    console.log('Verify:', fullPhone);
+    console.log('Verify: ' + fullPhone);
     showMsg('Verifying...');
     
     const session = await verifyOtp(fullPhone, token);
@@ -64,7 +64,7 @@ loginBtn.addEventListener('click', async () => {
       showMsg('Failed');
     }
   } catch (e) {
-    console.error('Error:', e);
+    console.error('Error: ' + e);
     showMsg('Error: ' + e.message);
   }
 });
