@@ -22,18 +22,18 @@ async function ensureRedirectIfLogged() {
 sendBtn.addEventListener('click', async () => {
   try {
     const phone = phoneInput.value.trim();
-    if (!phone) return showMsg('请填写手机号');
+    if (!phone) return showMsg('Please enter phone number');
     
     const fullPhone = phone.startsWith('+') ? phone : '+86' + phone;
-    console.log('[调试] 发送OTP到手机号:'， fullPhone);
-    showMsg('正在发送验证码...');
+    console.log('Sending OTP to:'， fullPhone);
+    showMsg('Sending verification code...');
     
     await sendOtp(fullPhone);
-    console.log('[调试] OTP发送成功');
-    showMsg('验证码已发送，请查收短信');
+    console.log('OTP sent successfully');
+    showMsg('Verification code sent, please check SMS');
   } catch (e) {
-    console.error('[调试] OTP发送失败:'， e);
-    showMsg('发送失败：' + (e。message || e));
+    console.error('OTP send failed:'， e);
+    showMsg('Send failed: ' + (e。message || e));
   }
 });
 
@@ -41,25 +41,25 @@ loginBtn.addEventListener('click', async () => {
   try {
     const phone = phoneInput.value.trim();
     const token = otpInput.value.trim();
-    if (!phone || !token) return showMsg('请填写手机号与验证码');
+    if (!phone || !token) return showMsg('Please enter phone and verification code');
     
     const fullPhone = phone.startsWith('+') ? phone : '+86' + phone;
-    console.log('[调试] 验证OTP:', { phone: fullPhone, token: token.substring(0, 3) + '***' });
-    showMsg('正在验证...');
+    console.log('Verifying OTP:', { phone: fullPhone, token: token.substring(0, 3) + '***' });
+    showMsg('Verifying...');
     
     const session = await verifyOtp(fullPhone, token);
     if (session) {
-      console.log('[调试] 登录成功');
-      showMsg('登录成功，正在跳转...');
+      console.log('Login successful');
+      showMsg('Login successful, redirecting...');
       setTimeout(function() {
         window.location.href = './index.html';
       }, 500);
     } else {
-      showMsg('登录失败，请重试');
+      showMsg('Login failed, please try again');
     }
   } catch (e) {
-    console.error('[调试] 登录失败:', e);
-    showMsg('登录失败：' + (e.message || e));
+    console.error('Login failed:', e);
+    showMsg('Login failed: ' + (e.message || e));
   }
 });
 
