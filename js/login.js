@@ -28,14 +28,14 @@ sendBtn.addEventListener('click', async () => {
     }
     
     const fullPhone = phone.startsWith('+') ? phone : '+86' + phone;
-    console。log('Sending OTP to: ' + fullPhone);
-    showMsg('Sending verification code...');
+    console.log('Sending OTP to phone:'， fullPhone);
+    showMsg('Sending code...');
     
     await sendOtp(fullPhone);
-    console.log('OTP sent successfully');
-    showMsg('Verification code sent, please check SMS');
+    console.log('OTP sent');
+    showMsg('Code sent, check SMS');
   } catch (e) {
-    console.error('OTP send failed: ' + e);
+    console.error('Send failed:', e);
     showMsg('Send failed: ' + e.message);
   }
 });
@@ -45,26 +45,26 @@ loginBtn.addEventListener('click', async () => {
     const phone = phoneInput.value.trim();
     const token = otpInput.value.trim();
     if (!phone || !token) {
-      showMsg('Please enter phone and verification code');
+      showMsg('Enter phone and code');
       return;
     }
     
     const fullPhone = phone.startsWith('+') ? phone : '+86' + phone;
-    console.log('Verifying OTP for: ' + fullPhone);
+    console.log('Verifying:', fullPhone);
     showMsg('Verifying...');
     
     const session = await verifyOtp(fullPhone, token);
     if (session) {
-      console.log('Login successful');
-      showMsg('Login successful, redirecting...');
+      console.log('Login success');
+      showMsg('Login success, redirecting...');
       setTimeout(function() {
         window.location.href = './index.html';
       }, 500);
     } else {
-      showMsg('Login failed, please try again');
+      showMsg('Login failed');
     }
   } catch (e) {
-    console.error('Login failed: ' + e);
+    console.error('Login failed:', e);
     showMsg('Login failed: ' + e.message);
   }
 });
