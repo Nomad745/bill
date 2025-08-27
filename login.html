@@ -14,12 +14,12 @@
   <body>
     <main class="container" style="min-height:100vh;display:flex;align-items:center;justify-content:center;">
       <div class="glass-card" style="max-width:420px;width:100%">
-        <h2 style="color:#fff;margin-top:0">手机号登录</h2>
+        <h2 style="color:#fff;margin-top:0">邮箱登录（临时）</h2>
         <div class="login-form" style="display:flex;flex-direction:column;gap:12px;">
-          <input class="glass-input" id="phone" placeholder="请输入手机号（如：13800138000）" />
-          <input class="glass-input" id="otp" placeholder="验证码（收到后填写）" />
-          <button class="glass-button" id="btn-send" style="width:100%">发送验证码</button>
-          <button class="glass-button" id="btn-login" style="width:100%">登录/注册</button>
+          <input class="glass-input" id="email" type="email" placeholder="请输入邮箱" />
+          <input class="glass-input" id="password" type="password" placeholder="请输入密码（至少6位）" />
+          <button class="glass-button" id="btn-signin" style="width:100%">登录</button>
+          <button class="glass-button secondary" id="btn-signup" style="width:100%">注册</button>
           <div class="glass-alert" id="login-msg" style="display:none"></div>
         </div>
       </div>
