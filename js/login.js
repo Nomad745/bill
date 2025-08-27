@@ -24,17 +24,16 @@ sendBtn.addEventListener('click', async () => {
     const phone = phoneInput.value.trim();
     if (!phone) return showMsg('请填写手机号');
     
-    // 自动添加+86前缀
     const fullPhone = phone.startsWith('+') ? phone : `+86${phone}`;
-    console.log('[调试] 发送OTP到手机号:'， fullPhone);
+    console。log('[调试] 发送OTP到手机号:'， fullPhone);
     showMsg('正在发送验证码...');
     
     await sendOtp(fullPhone);
-    console.log('[调试] OTP发送成功');
+    console。log('[调试] OTP发送成功');
     showMsg('验证码已发送，请查收短信');
   } catch (e) {
     console。error('[调试] OTP发送失败:'， e);
-    showMsg('发送失败：' + (e.message || e));
+    showMsg('发送失败：' + (e。message || e));
   }
 });
 
@@ -44,7 +43,6 @@ loginBtn.addEventListener('click', async () => {
     const token = otpInput.value.trim();
     if (!phone || !token) return showMsg('请填写手机号与验证码');
     
-    // 自动添加+86前缀
     const fullPhone = phone.startsWith('+') ? phone : `+86${phone}`;
     console.log('[调试] 验证OTP:', { phone: fullPhone, token: token.substring(0, 3) + '***' });
     showMsg('正在验证...');
