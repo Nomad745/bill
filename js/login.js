@@ -1,7 +1,11 @@
 import { signUpWithEmail, signInWithEmail, resetPassword } from './auth.js';
 import { getSession } from './database.js';
 
+console.log('login.js 开始加载...');
+
 document.addEventListener('DOMContentLoaded', function() {
+  console.log('DOM加载完成，开始初始化...');
+  
   // DOM元素 (updated to match new HTML structure)
   const loginForm = document.getElementById('login-form');
   const signupForm = document.getElementById('signup-form');
@@ -28,12 +32,22 @@ document.addEventListener('DOMContentLoaded', function() {
   
   const msgBox = document.getElementById('auth-msg');
 
+  console.log('DOM元素检查:', {
+    loginForm: !!loginForm,
+    signupForm: !!signupForm,
+    forgotForm: !!forgotForm,
+    msgBox: !!msgBox,
+    signinBtn: !!signinBtn,
+    signupBtn: !!signupBtn
+  });
+
   if (!loginForm || !signupForm || !forgotForm || !msgBox) {
     console.error('关键DOM元素获取失败');
     return;
   }
 
   function showMsg(text, type = 'info') {
+    console.log('显示消息:', text, type);
     msgBox.textContent = text;
     msgBox.className = `glass-alert ${type}`;
     msgBox.style.display = 'block';
@@ -49,6 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function showForm(formToShow) {
+    console.log('切换表单到:', formToShow.id);
     // 隐藏所有表单
     [loginForm, signupForm, forgotForm].forEach(form => {
       form.style.display = 'none';
@@ -97,20 +112,28 @@ document.addEventListener('DOMContentLoaded', function() {
 
   async function ensureRedirectIfLogged() {
     try {
+      console.log('检查是否已登录...');
       const session = await getSession();
       if (session?.user) {
         // 用户已登录，重定向到主页面
+        console.log('用户已登录，重定向到主页面');
         window.location.href = './index.html';
+      } else {
+        console.log('用户未登录');
       }
     } catch (error) {
-      console.log('用户未登录，显示登录页面');
+      console.log('检查登录状态失败:', error);
     }
   }
 
   // 登录按钮事件
+  console.log('绑定登录按钮事件...');
   signinBtn.addEventListener('click', async () => {
+    console.log('登录按钮被点击');
     const email = emailInput.value.trim();
     const password = passwordInput.value;
+
+    console.log('登录信息:', { email, password: password ? '***' : 'empty' });
 
     if (!email || !password) {
       showMsg('请输入邮箱和密码', 'error');
@@ -123,10 +146,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     try {
+      console.log('开始登录流程...');
       signinBtn.disabled = true;
       signinBtn.textContent = '登录中...';
 
-      await signInWithEmail(email, password);
+      const result = await signInWithEmail(email, password);
+      console.log('登录成功:', result);
       
       // 记住邮箱
       if (rememberMeCheckbox.checked) {
@@ -152,17 +177,23 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // 注册按钮事件
+  console.log('绑定注册按钮事件...');
   signupBtn.addEventListener('click', () => {
+    console.log('注册按钮被点击');
     showForm(signupForm);
     clearInputs();
   });
 
   // 注册提交按钮事件
+  console.log('绑定注册提交按钮事件...');
   signupSubmitBtn.addEventListener('click', async () => {
+    console.log('注册提交按钮被点击');
     const email = signupEmailInput.value.trim();
     const password = signupPasswordInput.value;
     const confirmPassword = confirmPasswordInput.value;
     const agreeTerms = agreeTermsCheckbox.checked;
+
+    console.log('注册信息:', { email, password: password ? '***' : 'empty', agreeTerms });
 
     if (!email || !password || !confirmPassword) {
       showMsg('请填写所有必填字段', 'error');
@@ -190,10 +221,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     try {
+      console.log('开始注册流程...');
       signupSubmitBtn.disabled = true;
       signupSubmitBtn.textContent = '创建中...';
 
-      await signUpWithEmail(email, password);
+      const result = await signUpWithEmail(email, password);
+      console.log('注册成功:', result);
       
       showMsg('账户创建成功！请检查邮箱并点击确认链接完成注册。', 'success');
       
@@ -214,12 +247,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // 返回登录按钮事件
   backToLoginBtn.addEventListener('click', () => {
+    console.log('返回登录按钮被点击');
     showForm(loginForm);
     clearInputs();
   });
 
   // 忘记密码链接事件
   forgotPasswordLink.addEventListener('click', (e) => {
+    console.log('忘记密码链接被点击');
     e.preventDefault();
     showForm(forgotForm);
     clearInputs();
@@ -227,6 +262,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // 发送重置链接按钮事件
   sendResetBtn.addEventListener('click', async () => {
+    console.log('发送重置链接按钮被点击');
     const email = resetEmailInput.value.trim();
 
     if (!email) {
@@ -240,10 +276,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     try {
+      console.log('开始发送重置链接...');
       sendResetBtn.disabled = true;
       sendResetBtn.textContent = '发送中...';
 
-      await resetPassword(email);
+      const result = await resetPassword(email);
+      console.log('重置链接发送成功:', result);
       
       showMsg('密码重置链接已发送到您的邮箱，请查收。', 'success');
       
@@ -255,7 +293,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     } catch (error) {
       console.error('发送重置链接失败:', error);
-      showMsg('发送失败：' + (error.message || error), 'error');
+      showMsg('发送失败：' + (error。message || error)， 'error');
     } finally {
       sendResetBtn.disabled = false;
       sendResetBtn.textContent = '发送重置链接';
@@ -264,24 +302,28 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // 从忘记密码返回按钮事件
   backFromForgotBtn.addEventListener('click', () => {
+    console。log('从忘记密码返回按钮被点击');
     showForm(loginForm);
     clearInputs();
   });
 
   // 密码强度实时更新
   signupPasswordInput.addEventListener('input', (e) => {
-    updatePasswordStrength(e.target.value);
+    updatePasswordStrength(e。target。value);
   });
 
   // 回车键提交表单
-  document.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-      if (loginForm.style.display !== 'none') {
-        signinBtn.click();
+  document。addEventListener('keypress'， (e) => {
+    if (e。key === 'Enter') {
+      if (loginForm。style。display !== 'none') {
+        console.log('回车键触发登录');
+        signinBtn。click();
       } else if (signupForm.style.display !== 'none') {
+        console。log('回车键触发注册');
         signupSubmitBtn.click();
       } else if (forgotForm.style.display !== 'none') {
-        sendResetBtn.click();
+        console.log('回车键触发发送重置链接');
+        sendResetBtn。click();
       }
     }
   });
@@ -294,6 +336,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // 初始化页面
+  console.log('开始初始化页面...');
   ensureRedirectIfLogged();
   
   // 恢复记住的邮箱
@@ -305,4 +348,6 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // 默认显示登录表单
   showForm(loginForm);
+  
+  console.log('页面初始化完成！');
 });
